@@ -26,11 +26,6 @@ function Bankier:Reset()
     self:Loaded()
 end
 
-function Bankier:Test()
-    LVK:Print("--------------")
-    self:Reset()
-end
-
 function Bankier:Dump()
     LVK:DebugDump(BankierSavedData, "BankierSavedData")
     LVK:DebugDump(BankierCharacterSavedData, "BankierCharacterSavedData")
