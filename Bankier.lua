@@ -76,22 +76,7 @@ function Bankier:Slash_List(args)
         for itemString, itemData in pairs(BankierCharacterSavedData.items) do
             if filter(itemData.level) then
                 any = true
-                
-                if (itemData.level == 0) then
-                    if (itemData.highThreshold or 0) ~= 0 then
-                        LVK:Print("   %s (..|g|+%d|<|)", itemData.itemLink, itemData.highThreshold)
-                    else
-                        LVK:Print("   %s", itemData.itemLink)
-                    end
-                elseif ((itemData.highThreshold or 0) ~= 0) and ((itemData.lowThreshold or 0) ~= 0) then
-                    LVK:Print("   %s: %d (|r|%d|<|..|g|+%d|<|)", itemData.itemLink, itemData.level, itemData.lowThreshold, itemData.highThreshold)
-                elseif (itemData.highThreshold or 0) ~= 0 then
-                    LVK:Print("   %s: %d (..|g|+%d|<|)", itemData.itemLink, itemData.level, itemData.highThreshold)
-                elseif (itemData.lowThreshold or 0) ~= 0 then
-                    LVK:Print("   %s: %d (|r|%d|<|..)", itemData.itemLink, itemData.level, itemData.lowThreshold)
-                else
-                    LVK:Print("   %s: %d", itemData.itemLink, itemData.level)
-                end
+                LVK:Print("   %s", self:GetItemDataAsString(itemData))
             end
         end
         if not any then
@@ -113,6 +98,24 @@ function Bankier:Slash_Set(args)
     return self:Slash_Add(args)
 end
 
+function Bankier:GetItemDataAsString(itemData)
+    if (itemData.level == 0) then
+        if (itemData.highThreshold or 0) ~= 0 then
+            return LVK:Colorize("%s (..|g|+%d|<|)", itemData.itemLink, itemData.highThreshold)
+        end
+
+        return LVK:Colorize("%s", itemData.itemLink)
+    elseif ((itemData.highThreshold or 0) ~= 0) and ((itemData.lowThreshold or 0) ~= 0) then
+        return LVK:Colorize("%s: %d (|r|%d|<|..|g|+%d|<|)", itemData.itemLink, itemData.level, itemData.lowThreshold, itemData.highThreshold)
+    elseif (itemData.highThreshold or 0) ~= 0 then
+        return LVK:Colorize("%s: %d (..|g|+%d|<|)", itemData.itemLink, itemData.level, itemData.highThreshold)
+    elseif (itemData.lowThreshold or 0) ~= 0 then
+        return LVK:Colorize("%s: %d (|r|%d|<|..)", itemData.itemLink, itemData.level, itemData.lowThreshold)
+    end
+
+    return LVK:Colorize("%s: %d", itemData.itemLink, itemData.level)
+end
+
 function Bankier:Slash_Remove(args)
     local itemLink = args[1]
     if (itemLink or "") == "" then
@@ -128,8 +131,9 @@ function Bankier:Slash_Remove(args)
         return
     end
 
+    local itemData = BankierCharacterSavedData.items[itemString]
     BankierCharacterSavedData.items[itemString] = nil
-    LVK:Print("|g|Removed|<| %s from bankier list", itemLink)
+    LVK:Print("|g|Removed|<| %s from bankier list", self:GetItemDataAsString(itemData))
 end
 
 function Bankier:Slash_Add(args)
@@ -166,19 +170,22 @@ function Bankier:Slash_Add(args)
         return
     end
 
-    Bankier:SetItem(itemLink, level, highThreshold, lowThreshold)
+    local itemData = Bankier:SetItem(itemLink, level, highThreshold, lowThreshold)
+    LVK:Print("Added '%s'", self:GetItemDataAsString(itemData))
 end
 
 function Bankier:SetItem(itemLink, level, highThreshold, lowThreshold)
     local itemString = LVK:GetItemString(itemLink)
 
-    BankierCharacterSavedData.items[itemString] = {
+    local itemData = {
         itemString = itemString,
         itemLink = itemLink,
         level = level,
         highThreshold = highThreshold,
         lowThreshold = lowThreshold
     }
+    BankierCharacterSavedData.items[itemString] = itemData
+    return itemData
 end
 
 function Bankier:ShowUsageHelp()
