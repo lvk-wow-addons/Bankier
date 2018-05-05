@@ -1,44 +1,63 @@
+Bankier = CreateFrame("Frame")
 
-Bankier = {
-    LoadCharacterSavedData = function(data)
-        if data == nil then
-            return {
-            }
-        end
+function Bankier:LoadCharacterSavedData(data)
+    if data == nil then
+        return {
+        }
+    end
 
-        return data
-    end,
+    return data
+end
 
-    LoadSavedData = function(data)
-        if data == nil then
-            return {
-            }
-        end
+function Bankier:LoadSavedData(data)
+    if data == nil then
+        return {
+        }
+    end
 
-        return data
-    end,
+    return data
+end
 
-    Load = function()
-        BankierCharacterSavedData = Bankier.LoadCharacterSavedData(BankierCharacterSavedData)
-        BankierSavedData = Bankier.LoadSavedData(BankierSavedData)
+function Bankier:Reset()
+    BankierCharacterSavedData = nil
+    BankierSavedData = nil
+    self:Loaded()
+end
 
-        LVK.PrintAddonLoaded("Bankier")
-    end,
+function Bankier:Test()
+    LVK:Print("--------------")
+    self:Reset()
+end
 
-    Reset = function()
-        BankierCharacterSavedData = nil
-        BankierSavedData = nil
-        Bankier.Load()
-    end,
+function Bankier:Dump()
+    LVK:DebugDump(BankierSavedData, "BankierSavedData")
+    LVK:DebugDump(BankierCharacterSavedData, "BankierCharacterSavedData")
+end
 
-    Test = function()
-        Bankier.Reset()
-    end,
+function Bankier:Init()
+    self:RegisterEvent("ADDON_LOADED")
+    self:SetScript("OnEvent", function(self, event, ...)
+        self[event](self, ...);
+    end);
+end
 
-    Dump = function()
-        LVK.Dump(BankierSavedData, "BankierSavedData")
-        LVK.Dump(BankierCharacterSavedData, "BankierCharacterSavedData")
-    end,
-}
+function Bankier:Loaded()
+    BankierCharacterSavedData = self:LoadCharacterSavedData(BankierCharacterSavedData)
+    BankierSavedData = self:LoadSavedData(BankierSavedData)
+    LVK:PrintAddonLoaded("Bankier")
 
-Bankier.Load()
+    LVK:DebugDump(BankierCharacterSavedData, "BankierCharacterSavedData")
+    LVK:DebugDump(BankierSavedData, "BankierSavedData")
+end
+
+function Bankier:ADDON_LOADED(addon)
+    if addon ~= "Bankier" then
+        return
+    end
+
+    self:Loaded()
+    self:UnregisterEvent("ADDON_LOADED")
+end
+
+
+Bankier:Init()
