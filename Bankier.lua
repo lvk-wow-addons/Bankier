@@ -3,6 +3,7 @@ Bankier = CreateFrame("Frame")
 function Bankier:LoadCharacterSavedData(data)
     if data == nil then
         return {
+            version = 1,
         }
     end
 
@@ -12,6 +13,7 @@ end
 function Bankier:LoadSavedData(data)
     if data == nil then
         return {
+            version = 1,
         }
     end
 
