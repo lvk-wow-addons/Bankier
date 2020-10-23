@@ -119,14 +119,14 @@ end
 function Bankier:Slash_Remove(args)
     local itemLink = args[1]
     if (itemLink or "") == "" then
-        LVK:ErrorPrint("No item link provided")
+        LVK:Error("No item link provided")
         LVK:ShowHelp(Bankier.Help, "remove")
         return
     end
 
     local itemString = LVK:GetItemString(itemLink)
     if (itemString or "") == nil then
-        LVK:ErrorPrint("No item link provided")
+        LVK:Error("No item link provided")
         LVK:ShowHelp(Bankier.Help, "remove")
         return
     end
@@ -159,13 +159,13 @@ function Bankier:Slash_Add(args)
     end
 
     if itemLink == "" then
-        LVK:ErrorPrint("No item link provided")
+        LVK:Error("No item link provided")
         LVK:ShowHelp(Bankier.Help, "add")
         return
     end
 
     if level == nil then
-        LVK:ErrorPrint("No level provided")
+        LVK:Error("No level provided")
         LVK:ShowHelp(Bankier.Help, "add")
         return
     end
@@ -199,7 +199,7 @@ end
 function Bankier:Loaded()
     BankierCharacterSavedData = self:LoadCharacterSavedData(BankierCharacterSavedData)
     BankierSavedData = self:LoadSavedData(BankierSavedData)
-    LVK:PrintAddonLoaded("Bankier")
+    LVK:AnnounceAddon("Bankier")
 
     -- LVK:DebugDump(BankierCharacterSavedData, "BankierCharacterSavedData")
     -- LVK:DebugDump(BankierSavedData, "BankierSavedData")

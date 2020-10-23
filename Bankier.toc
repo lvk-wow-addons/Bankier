@@ -1,10 +1,10 @@
-## Interface: 70300
+## Interface: 90001
 ## Title: Bankier
 ## Notes: 
 ## Author: Lasse Vågsæther Karlsen
 ## Version: 0.10.0
 ## DefaultState: Enabled
-## Dependencies: LVKLib
+## Dependencies: LVK
 ## SavedVariablesPerCharacter: BankierCharacterSavedData
 ## SavedVariables: BankierSavedData
 Bankier.lua
