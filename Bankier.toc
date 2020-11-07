@@ -2,7 +2,7 @@
 ## Title: Bankier
 ## Notes: 
 ## Author: Lasse Vågsæther Karlsen
-## Version: 0.10.0
+## Version: 9.0.0.1
 ## DefaultState: Enabled
 ## Dependencies: LVK
 ## SavedVariablesPerCharacter: BankierCharacterSavedData
